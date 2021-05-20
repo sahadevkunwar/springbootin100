@@ -1,11 +1,18 @@
 package com.sahadev.springbootin100.entities;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+/*import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotEmpty;*/
 
 @Entity
 @Table(name="USER")
@@ -13,8 +20,14 @@ public class User {
 	@Id
 	@GeneratedValue
 	private Long id;
+	
+	
+	@NotEmpty(message="Please provide username")
 	@Column(name="USER_NAME",length=50,nullable=false,unique=true)
 	private String username;
+	
+	
+	@Size(min=2,message="First name should have at least 2 character")
 	@Column(name="FIRST_NAME",length=50,nullable=false)
 	private String firstname;
 	@Column(name="LAST_NAME",length=50,nullable=false)
@@ -25,6 +38,8 @@ public class User {
 	private String role;
 	@Column(name="SSN",length=50,nullable=false,unique=true)
 	private String ssn;
+	@OneToMany(mappedBy="user")
+	private List<Order> orders;
 	
 	public User() {
 		super();
@@ -95,6 +110,15 @@ public class User {
 
 	public void setSsn(String ssn) {
 		this.ssn = ssn;
+	}
+    
+	
+	public List<Order> getOrders() {
+		return orders;
+	}
+
+	public void setOrders(List<Order> orders) {
+		this.orders = orders;
 	}
 
 	@Override
