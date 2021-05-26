@@ -10,13 +10,13 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-/*import javax.validation.constraints.Size;
 
-import org.hibernate.validator.constraints.NotEmpty;*/
+import org.springframework.hateoas.RepresentationModel;
+
 
 @Entity
 @Table(name="USER")
-public class User {
+public class User extends RepresentationModel<User>{
 	@Id
 	@GeneratedValue
 	private Long id;
