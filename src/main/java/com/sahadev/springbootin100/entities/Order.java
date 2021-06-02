@@ -10,48 +10,50 @@ import javax.persistence.Table;
 import org.springframework.hateoas.RepresentationModel;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 
 @Entity
-@Table(name="orders")
-public class Order extends RepresentationModel{
+@Table(name = "orders")
+public class Order extends RepresentationModel {
 	@Id
 	@GeneratedValue
-private Long orderid;
-private String orderdescription;
+	@JsonView(Views.Internal.class)
+	private Long orderid;
 
-@ManyToOne(fetch=FetchType.LAZY)
-@JsonIgnore
-private User user;
+	@JsonView(Views.Internal.class)
+	private String orderdescription;
 
-public Order() {
-	super();
-	// TODO Auto-generated constructor stub
-}
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JsonIgnore
+	private User user;
 
-public Long getOrderid() {
-	return orderid;
-}
+	public Order() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
-public void setOrderid(Long orderid) {
-	this.orderid = orderid;
-}
+	public Long getOrderid() {
+		return orderid;
+	}
 
-public String getOrderdescription() {
-	return orderdescription;
-}
+	public void setOrderid(Long orderid) {
+		this.orderid = orderid;
+	}
 
-public void setOrderdescription(String orderdescription) {
-	this.orderdescription = orderdescription;
-}
+	public String getOrderdescription() {
+		return orderdescription;
+	}
 
-public User getUser() {
-	return user;
-}
+	public void setOrderdescription(String orderdescription) {
+		this.orderdescription = orderdescription;
+	}
 
-public void setUser(User user) {
-	this.user = user;
-}
+	public User getUser() {
+		return user;
+	}
 
-
+	public void setUser(User user) {
+		this.user = user;
+	}
 
 }
