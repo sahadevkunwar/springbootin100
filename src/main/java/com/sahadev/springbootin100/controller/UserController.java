@@ -9,6 +9,7 @@ import javax.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,19 +28,26 @@ import com.sahadev.springbootin100.exceptions.UserExistsException;
 import com.sahadev.springbootin100.exceptions.UserNameNotFoundException;
 import com.sahadev.springbootin100.exceptions.UserNotFoundException;
 import com.sahadev.springbootin100.services.UserService;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 //////
+@Api(tags="User management resful services",value="UserController",description="Controller for user management services")
 @RestController
 @Validated
 @RequestMapping(value="/users")
 public class UserController {
 	@Autowired
 	private UserService userService;
-      @GetMapping 
+	 @ApiOperation(value="retrive list of user")
+	@GetMapping(produces=MediaType.APPLICATION_JSON_VALUE)
 	public List<User> getAllUser(){
 		return userService.getAllUser();
 	}
+      @ApiOperation(value="create a new user")
       @PostMapping
-      public ResponseEntity<Void> createUser(@Valid @RequestBody User user,UriComponentsBuilder builder) {
+      public ResponseEntity<Void> createUser(@ApiParam("user information for a new user to be created")@Valid @RequestBody User user,UriComponentsBuilder builder) {
     	  try {
         	   userService.createUser(user);
         	   HttpHeaders headers=new HttpHeaders();
@@ -50,10 +58,12 @@ public class UserController {
     		  throw new ResponseStatusException(HttpStatus.BAD_REQUEST,ex.getMessage());
     	  }
       }
+     
       @GetMapping("/{id}")
-      public Optional<User> getUserById(@PathVariable("id")@Min(1) Long id){
+      public User getUserById(@PathVariable("id")@Min(1) Long id){
     	  try {
-        	  return userService.getUserById(id);
+        	  Optional<User> userOptional=userService.getUserById(id);
+        	  return userOptional.get();
     	  }catch(UserNotFoundException ex) {
     		  throw new ResponseStatusException(HttpStatus.NOT_FOUND,ex.getMessage());
     	  }
